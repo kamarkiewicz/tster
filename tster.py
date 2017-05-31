@@ -48,7 +48,7 @@ def collect_test_cases(module):
 
 def exec_program(program, stdin):
     ''' Runs your program with stdin filled from the test. '''
-    stdout = subprocess.check_output(program, input=stdin.encode())
+    stdout = subprocess.check_output(program, input=stdin.encode(), shell=True)
     return stdout.decode()
 
 def compare_row(expected_row, data_row):
@@ -75,11 +75,19 @@ def main(args):
 
     assert len(args) > 1, 'first argument should be a path to your program'
 
+    PROGRAM = args[1]
+    PSQL_TOOL = ('PGHOST=localhost PGUSER={db_login} PGPASSWORD={db_passwd} ' +
+                 'psql {db_name}').format(**secrets.SECRETS)
+
     for test in collect_test_cases(tests):
         data = test()
         print(RES_PENDING.format(**data), end='')
-        result = exec_program(args[1], data['stdin'])
         try:
+            if 'sql_setup' in data:
+                exec_program(PSQL_TOOL, data['sql_setup'])
+            result = exec_program(PROGRAM, data['stdin'])
+            if 'sql_teardown' in data:
+                exec_program(PSQL_TOOL, data['sql_teardown'])
             mismatches = list(compare(data['stdout'], result))
             print('[ {} ]'.format(RES_OK if not mismatches else RES_FAIL))
             if mismatches:

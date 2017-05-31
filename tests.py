@@ -43,3 +43,25 @@ def test_bad_login():
             {"status": "ERROR"}
         ''',
     }
+
+@test_case(label='api_organizer')
+def test_organizer_creation():
+    return {
+        'sql_setup': '''
+            SELECT 0 = (SELECT count(*) FROM person);
+        ''',
+        'stdin': '''
+            { "open": { "baza": "${db_name}", "login": "${db_login}", "password": "${db_passwd}"}}
+            { "organizer": { "secret": "${secret}", "newlogin": "stefan", "newpassword": "banach"}}
+            { "organizer": { "secret": "${secret}", "newlogin": "stefan", "newpassword": "muller"}}
+        ''',
+        'stdout': '''
+            {"status": "OK"}
+            {"status": "OK"}
+            {"status": "ERROR"}
+        ''',
+        'sql_teardown': '''
+            SELECT 1 = (SELECT count(*) FROM person);
+            DELETE FROM person;
+        '''
+    }
