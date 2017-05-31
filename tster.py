@@ -1,13 +1,6 @@
 #!/usr/bin/python3
-import itertools
-import json
-import logging
-import subprocess
-import sys
-from string import Template
-
-import secrets
-import tests
+import itertools, json, logging, subprocess, sys, string
+import secrets, tests
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -32,7 +25,7 @@ def test_case(label='unknown'):
                 assert streamtype in data, "Your test does not contain {} data".format(streamtype)
                 ''' Option for those who need more control.
                     May be useful for testing invalid input. '''
-                data[streamtype] = Template(data[streamtype]).substitute(secrets.SECRETS)
+                data[streamtype] = string.Template(data[streamtype]).substitute(secrets.SECRETS)
                 if not streamtype + '_as_is' in data:
                     data[streamtype] = io_cleaner(data[streamtype])
             return data
@@ -70,8 +63,7 @@ def main(args):
     from pprint import pprint
 
     RES_PENDING = '\33[1m{label}::{testname}\33[0m\t ... '
-    RES_OK = '\33[1m\33[32mOK\33[0m'
-    RES_FAIL = '\33[1m\33[31mFAIL\33[0m'
+    RES_OK, RES_FAIL = '\33[1m\33[32mOK\33[0m', '\33[1m\33[31mFAIL\33[0m'
 
     assert len(args) > 1, 'first argument should be a path to your program'
 
