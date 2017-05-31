@@ -4,6 +4,7 @@ import json
 import logging
 import subprocess
 import sys
+from string import Template
 
 import tests
 
@@ -30,6 +31,7 @@ def test_case(label='unknown'):
                 assert streamtype in data, "Your test does not contain {} data".format(streamtype)
                 ''' Option for those who need more control.
                     May be useful for testing invalid input. '''
+                data[streamtype] = Template(data[streamtype]).substitute(tests.SECRETS)
                 if not streamtype + '_as_is' in data:
                     data[streamtype] = io_cleaner(data[streamtype])
             return data
