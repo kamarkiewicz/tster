@@ -1,12 +1,5 @@
 from tster import test_case
 
-SECRETS = {
-    'db_name': 'stud',
-    'db_login': 'stud',
-    'db_passwd': 'stud',
-    'secret': 'my-little-secret',
-}
-
 @test_case(label='api_open')
 def test_good_creds():
     return {
