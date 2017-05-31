@@ -15,5 +15,10 @@ Uruchamienie komendą (pod Linuksem; na innych systemach powinno być podobnie):
 python3 tster.py <ścieżka_do_programu>
 ```
 
+Polecam też wykonać poniższą komendę, by zmiana wartości w `secrets.py` przypadkiem nie trafiła do repozytorium:
+```
+git update-index --skip-worktree secrets.py
+```
+
 Mile widziane pull requesty z testami ;)
 
