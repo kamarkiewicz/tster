@@ -69,7 +69,7 @@ def main(args):
 
     PROGRAM = args[1]
     PSQL_TOOL = ('PGHOST=localhost PGUSER={db_login} PGPASSWORD={db_passwd} ' +
-                 'psql {db_name}').format(**secrets.SECRETS)
+                 'psql -v ON_ERROR_STOP=1 {db_name}').format(**secrets.SECRETS)
 
     for test in collect_test_cases(tests):
         data = test()
