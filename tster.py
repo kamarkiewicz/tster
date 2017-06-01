@@ -23,11 +23,8 @@ def test_case(label='unknown'):
             data.update(func())
             for streamtype in ['stdin', 'stdout']:
                 assert streamtype in data, "Your test does not contain {} data".format(streamtype)
-                ''' Option for those who need more control.
-                    May be useful for testing invalid input. '''
                 data[streamtype] = string.Template(data[streamtype]).substitute(secrets.SECRETS)
-                if not streamtype + '_as_is' in data:
-                    data[streamtype] = io_cleaner(data[streamtype])
+                data[streamtype] = io_cleaner(data[streamtype])
             return data
         return test_case_wrapper
     return func_wrapper
@@ -48,15 +45,12 @@ def compare_row(expected_row, data_row):
     return set(expected_row.items()) ^ set(data_row.items())
 
 def compare(expected, data):
-    assert isinstance(expected, str)
-    assert isinstance(data, str)
     expected = [json.loads(line) for line in expected.splitlines()]
     data = [json.loads(line) for line in data.splitlines()]
     assert len(expected) == len(data)
     for i, expected_row, data_row in zip(itertools.count(), expected, data):
         diff = compare_row(expected_row, data_row)
-        if diff:
-            yield (i, diff)
+        if diff: yield (i, diff)
 
 def main(args):
     ''' Test runner! '''
