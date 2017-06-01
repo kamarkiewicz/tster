@@ -9,7 +9,7 @@ def io_cleaner(data):
     ''' This should parse your stdin/stdout in a way that is valid in spec.
         The approach allows to have prettified jsons in tests. '''
     if isinstance(data, str):
-        data = iter(json.loads(line) for line in data.strip().splitlines())
+        data = iter(json.loads(line) for line in data.strip().splitlines() if line.strip())
     return '\n'.join(json.dumps(e) for e in data)
 
 def test_case(label='unknown'):
