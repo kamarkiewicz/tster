@@ -62,11 +62,13 @@ def main(args):
     assert len(args) > 1, 'first argument should be a path to your program'
 
     PROGRAM = args[1]
+    LABEL = next(iter(args[2:]), None) # optional second argument
     PSQL_TOOL = ('PGHOST=localhost PGUSER={db_login} PGPASSWORD={db_passwd} ' +
                  'psql -v ON_ERROR_STOP=1 {db_name}').format(**secrets.SECRETS)
 
     for test in collect_test_cases(tests):
         data = test()
+        if LABEL and LABEL != data['label']: continue
         print(RES_PENDING.format(**data), end='')
         try:
             if 'sql_setup' in data:
