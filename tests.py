@@ -91,6 +91,24 @@ def test_organizer_creation():
         '''
     }
 
+@test_case(label='api_event')
+def test_inserting_event_with_unique_eventname():
+    return {
+        'sql_setup': SQL_TRUNCATE_ALL_TABLES,
+        'stdin': '''
+            { "open": { "baza": "${db_name}", "login": "${db_login}", "password": "${db_passwd}"}}
+            {"organizer": {"secret": "${secret}", "newlogin": "Donald_Grump11", "newpassword": "admin"}}
+            {"event": {"login": "Donald_Grump11", "password": "admin", "eventname": "Konwent", "start_timestamp": "2016-01-20 10:00", "end_timestamp": "2016-02-01 18:00"}}
+            {"event": {"login": "Donald_Grump11", "password": "admin", "eventname": "Konwent", "start_timestamp": "2017-01-20 16:00", "end_timestamp": "2017-02-01 18:00"}}
+        ''',
+        'stdout': '''
+            {"status": "OK"}
+            {"status": "OK"}
+            {"status": "OK"}
+            {"status": "ERROR"}
+        ''',
+    }
+
 @test_case(label='random')
 def test_batch():
     return {
