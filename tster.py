@@ -48,7 +48,7 @@ def compare(expected, data):
     expected = [json.loads(line) for line in expected.splitlines()]
     data = [json.loads(line) for line in data.splitlines()]
     assert len(expected) == len(data)
-    for i, expected_row, data_row in zip(itertools.count(), expected, data):
+    for i, expected_row, data_row in zip(itertools.count(1), expected, data):
         diff = compare_row(expected_row, data_row)
         if diff: yield (i, diff)
 
