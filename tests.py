@@ -86,9 +86,6 @@ def test_organizer_creation():
             {"status": "OK"}
             {"status": "ERROR"}
         ''',
-        'sql_teardown': '''
-            SELECT assert(1, (SELECT count(*) FROM person)::integer);
-        '''
     }
 
 @test_case(label='api_event')
