@@ -118,3 +118,12 @@ def test_batch():
             {"status": "OK"}
         ''' * 1013
     }
+
+@test_case(label='public_test')
+def test_batch():
+    return {
+        'sql_setup': SQL_TRUNCATE_ALL_TABLES,
+        'stdin': open('public_test.json').read(),
+        'stdout': open('public_test_out.json').read()
+    }
+
