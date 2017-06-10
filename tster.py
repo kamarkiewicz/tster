@@ -65,6 +65,7 @@ def main(args):
     PROGRAM = args[1]
     LABEL = next(iter(args[2:]), None) # optional second argument
     PSQL_TOOL = ('PGHOST=localhost PGUSER={db_login} PGPASSWORD={db_passwd} ' +
+                 "PGOPTIONS='--client-min-messages=warning' " +
                  'psql -v ON_ERROR_STOP=1 {db_name}').format(**secrets.SECRETS)
 
     for test in collect_test_cases(tests):
