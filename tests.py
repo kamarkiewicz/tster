@@ -120,7 +120,7 @@ def test_batch():
     }
 
 @test_case(label='public_test')
-def test_batch():
+def public_test():
     return {
         'sql_setup': SQL_TRUNCATE_ALL_TABLES,
         'stdin': open('public_test.json').read(),
