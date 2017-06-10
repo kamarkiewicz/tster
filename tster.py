@@ -42,7 +42,8 @@ def exec_program(program, stdin):
     return stdout.decode()
 
 def compare_row(expected_row, data_row):
-    return set(expected_row.items()) ^ set(data_row.items())
+    from jsondiff import diff
+    return diff(expected_row, data_row)
 
 def compare(expected, data):
     expected = [json.loads(line) for line in expected.splitlines()]
