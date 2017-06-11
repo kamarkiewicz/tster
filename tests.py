@@ -106,6 +106,22 @@ def test_inserting_event_with_unique_eventname():
         ''',
     }
 
+@test_case(label='api_talk')
+def test_accepting_the_proposal():
+    return {
+        'sql_setup': SQL_TRUNCATE_ALL_TABLES,
+        'stdin': '''
+            { "open": { "baza": "${db_name}", "login": "${db_login}", "password": "${db_passwd}"}}
+            {"organizer": {"secret": "${secret}", "newlogin": "org", "newpassword": "qwerty"}}
+            {"user": {"login": "org", "password": "qwerty", "newlogin": "usr1", "newpassword": "qwerty1"}}
+            {"proposal": {"login": "usr1", "password": "qwerty1", "talk": "ptalk#u1#t1", "title": "title#u1#t1", "start_timestamp": "2017-01-01 06:15:00"}}
+            {"talk": {"login": "org", "password": "qwerty", "speakerlogin": "usr1", "talk": "ptalk#u1#t1", "title": "title#u1#t1", "start_timestamp": "2017-01-01 06:15:00", "room": "958", "initial_evaluation": "5", "eventname": ""}}
+        ''',
+        'stdout': '''
+            {"status": "OK"}
+        ''' * 5
+    }
+
 @test_case(label='random')
 def test_batch():
     return {
