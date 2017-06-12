@@ -140,3 +140,20 @@ def public_test():
         'stdout': open('public_test_out.json').read()
     }
 
+@test_case(label='abandoned_talks')
+def public_test_with_abandoned_talks():
+    return {
+        'sql_setup': SQL_TRUNCATE_ALL_TABLES,
+        'stdin': open('public_test.json').read() + '''
+            {"abandoned_talks": {"login": "org", "password": "qwerty", "limit": 0}}
+            {"abandoned_talks": {"login": "org", "password": "qwerty", "limit": 2}}
+            {"abandoned_talks": {"login": "usr0", "password": "qwerty0", "limit": 0}}
+            {"abandoned_talks": {"login": "usr007", "password": "qwerty007", "limit": 0}}
+        ''',
+        'stdout': open('public_test_out.json').read() + '''
+            {"status":"OK", "data":[{"number":5,"room":"0","start_timestamp":"2017-01-01 02:15:00","talk":"talk#u1#t0","title":"title#u1#t0"},{"number":5,"room":"1","start_timestamp":"2017-01-01 03:15:00","talk":"talk#u1#t1","title":"title#u1#t1"},{"number":5,"room":"1","start_timestamp":"2017-01-01 05:15:00","talk":"talk#u2#t1","title":"title#u2#t1"},{"number":5,"room":"1","start_timestamp":"2017-01-01 09:15:00","talk":"talk#u4#t1","title":"title#u4#t1"},{"number":5,"room":"0","start_timestamp":"2017-01-01 10:15:00","talk":"talk#u5#t0","title":"title#u5#t0"},{"number":5,"room":"1","start_timestamp":"2017-01-01 11:15:00","talk":"talk#u5#t1","title":"title#u5#t1"},{"number":5,"room":"0","start_timestamp":"2017-01-01 14:15:00","talk":"talk#u7#t0","title":"title#u7#t0"},{"number":5,"room":"1","start_timestamp":"2017-01-01 15:15:00","talk":"talk#u7#t1","title":"title#u7#t1"},{"number":5,"room":"1","start_timestamp":"2017-01-01 17:15:00","talk":"talk#u8#t1","title":"title#u8#t1"},{"number":5,"room":"2","start_timestamp":"2017-08-01 02:15:00","talk":"talk#u15#t2","title":"title#u15#t2"},{"number":5,"room":"3","start_timestamp":"2017-08-01 03:15:00","talk":"talk#u15#t3","title":"title#u15#t3"},{"number":3,"room":"1","start_timestamp":"2017-08-01 01:15:00","talk":"talk#u15#t1","title":"title#u15#t1"},{"number":2,"room":"0","start_timestamp":"2017-08-01 00:15:00","talk":"talk#u15#t0","title":"title#u15#t0"},{"number":1,"room":"5","start_timestamp":"2017-08-01 05:15:00","talk":"talk#u15#t5","title":"title#u15#t5"}]}
+            {"status":"OK", "data":[{"number":5,"room":"1","start_timestamp":"2017-01-01 03:15:00","talk":"talk#u1#t1","title":"title#u1#t1"},{"number":5,"room":"0","start_timestamp":"2017-01-01 02:15:00","talk":"talk#u1#t0","title":"title#u1#t0"}]}
+            {"status":"ERROR"}
+            {"status":"ERROR"}
+        '''
+    }
