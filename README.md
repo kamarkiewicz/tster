@@ -30,6 +30,31 @@ cd /home/me/tster
 python3 tster.py /home/me/projekt_bazy/program public_test
 ```
 
+## FAQ
+
+Q: Mi tster nie działa! Piszę:
+```
+python3 tster.py ~/Projekt\ na\ bazy/rozwiazanie.py api_open
+```
+a dostaję dziwne errory.
+
+A: tster jako drugi argument przyjmuje dokładnie to, co normalnie podałbyś w shellu. Ponadto
+musisz podawać pełną ścieżkę zamiast względnej. Więc jeśli normalnie uruchamiasz swój program:
+```
+cd /home/me/Projekt\ na\ bazy/ && python3 rozwiazanie.py
+```
+to do tstera musisz podać (będąc w katalogu tstera):
+```
+python3 tster.py "cd /home/me/Projekt\ na\ bazy/ && python3 rozwiazanie.py" api_open
+```
+
+Q: Jak mogę wyświetlić informacje do debugowania?
+
+A: tster traktuje stdout jak prawdę objawioną i porównuje go z stdoutem przypadku testowego.
+stderr nie jest w ogóle sprawdzany, więc to jego powinieneś używać do pisania po konsoli
+w trakcie działania testu.
+
+
 
 Mile widziane pull requesty z testami ;)
 
